@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{{MEDIA_URL}}js/form.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/animations.js"></script>
+{% endblock %}
+
+{% block extra_js_ready %}
+	init_form();
+
+	{% for entry in entries %}
+	{% if entry.public or user == entry.author %}
+	$("#{{ entry.slug }}-link").hover(
+		function() { $("#{{ entry.slug }}-desc").css("display","inline"); },
+		function() { $("#{{ entry.slug }}-desc").css("display","none"); }
+	);
+	
+	$("#{{ entry.slug }}-content a.num_comments").click(
+		function(evento) {
+			evento.preventDefault();
+			$( "#{{ entry.slug }}-content div.comments" ).fadeIn('slow');
+		}
+		);
+	
+  
+	$( "#{{ entry.slug }}-link" ).toggle(
+		function(evento) { expand(evento,'{{ entry.slug }}'); },
+		function(evento) { contract(evento,'{{ entry.slug }}'); }
+		);
+	$( "#{{ entry.slug }}-link" ).dblclick( function() { } );
+
+    $('#{{ entry.slug }}-content a.num_comments,#{{ entry.slug }}-content a.add_comments,#{{ entry.slug }}-content a.reload').click( function(evento) {
+        evento.preventDefault();
+        $( "#{{ entry.slug }}-content div.comments" ).show();
+        updatecomments('{{ entry.slug }}' );} );
+
+	$("#{{ entry.slug }}-content a.add_comment").click(
+		function(evento) {
+			evento.preventDefault();
+			$( "#slug" ).attr('value','{{ entry.slug }}');
+			$( "#addcomment" ).dialog('open');
+		}
+		);
+
+	{% endif %}
+	{% endfor %}
+	
+	$('.content').addClass('content_contract').removeClass('content_expanded0').removeClass('content_expanded1');
+	$('.comments').css('display','none');
+{% endblock %}
+
+{% block content %}
+
+{% for entry in entries %}
+{% include 'entry.html' %}
+{% endfor %}
+
+{% include 'addcomment.html' %}
+
+{% endblock %}

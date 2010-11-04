@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="language" content="es" />
+<meta name="author" content="Rubén Dugo" />
+<meta name="description" content={% block description %}'"El blog de Rubén Dugo. Informática, ciencia, escepticismo, chispas y todo aquello que se me ocurra :)."'{% endblock %} />
+<meta name="keywords" content={% block keywords %}'"ruben dugo,dugo,informatica,ciencia,escepticismo,tecnologia,seo,internet"'{% endblock %}/>
+
+<link rel="SHORTCUT ICON" href="favicon.ico"/>
+
+<title>{% block title %}La chispa adecuada{% endblock %}</title>
+
+<!-- General -->
+<script src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+<script src="{{ MEDIA_URL }}js/jquery-ui-1.8.5.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/lachispaadecuada.css" />
+
+<!-- Solo para los formularios -->
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery-ui-1.8.5.custom.css" />
+
+{% block extra_js %} {% endblock %}
+
+{% block extra_css %} {% endblock %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    tips = $( ".validateTips" );
+
+    $( "#dialog-login" ).dialog({
+        autoOpen: false,
+        height: 260,
+        width: 250,
+        resizable: false,
+        modal: true,
+        buttons: {
+            "Ok": function() {
+                
+                $.post( '{% url blog.views.loginajax %}', $("#loginform").serialize(), 
+                function(data)
+                {
+                    if (data === "false")
+                    {
+                        updateTips("Usuario o contraseña incorrecto");
+                    }
+                    else
+                    {
+                        // Si va bien vamos a la direccion destino
+                        window.location.replace(data);
+                    }
+                });
+                
+            }
+        }
+    });
+    
+    function updateTips( t ) {
+        tips
+            .text( t )
+            .addClass( "ui-state-highlight" );
+        setTimeout(function(){tips.removeClass("ui-state-highlight",'slow');},2000);
+    }
+    
+    $('#loginlink').click(
+    function(evento){
+    evento.preventDefault();
+    $('#dialog-login').dialog('open');
+    });
+    
+    
+    $('#dialog-login input[type=text]').keydown(function(e) {
+        if(e.keyCode == 9 || e.keyCode == 13)
+        {
+            e.preventDefault();
+            $('#dialog-login input[type=password]').focus().select();
+        }
+    });
+    
+    $('#dialog-login input[type=password]').keypress(function(e) {
+        if(e.keyCode == 13)
+        {
+            $('#dialog-login').next().find('button:contains("Ok")').trigger('click');
+        }
+    });
+    
+    MAIN_URL = "{% url main %}";
+    
+    {% block extra_js_ready %} {% endblock %}
+});
+</script>
+
+</head>
+
+<body>
+
+<div id="header">
+	<h1>La chispa adecuada</h1>
+	<h2>Informática, ciencia, escepticismo, chispas y todo aquello que se me ocurra :)</h2>
+    
+    <h3>
+    <!-- Login/logout -->
+    {% if user.is_authenticated %}
+    Hola {{ user.username }}!
+    <a href="{% url django.contrib.auth.views.logout %}">Logout</a>
+    <a href="{% url blog.views.edit %}">Nueva</a>
+    {% else %}
+    <a href="#" id="loginlink">Login</a>
+    {% endif %}
+    </h3>
+</div>
+
+{% block content %}{% endblock %}
+
+<div id="dialog-login" title="Identificación">
+	<form method="POST" action="{% url blog.views.loginajax %}" id="loginform">
+    {% csrf_token %}
+	<fieldset>
+		<label for="login">Usuario</label>
+		<input type="text" name="username" id="username" value="" class="text ui-widget-content ui-corner-all" />
+		<label for="password">Contraseña</label>
+		<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+        <input type="hidden" id="next" name="next" value="{{ next }}"/>
+	</fieldset>
+	</form>
+	<p class="validateTips">Identifíquese para acceder</p>
+</div>
+
+</body>
+</html>

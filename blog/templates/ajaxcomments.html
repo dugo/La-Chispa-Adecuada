@@ -1,0 +1,4 @@
+{% for c in comments %}
+<span class="author">[{{c.created|date:"dby H:i"}}] {{c.author }}:</span>
+<div class="comment"><p>{{ c.content }}</p></div>
+{% endfor %}

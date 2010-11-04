@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{{MEDIA_URL}}/js/form.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}/js/animations.js"></script>
+{% endblock %}
+
+{% block extra_js_ready %}
+	init_form();
+    
+    $('.add_comment').click(
+		function(evento) {
+			evento.preventDefault();
+			$( "#slug" ).attr('value','{{ entry.slug }}');
+			$( "#addcomment" ).dialog('open');
+		}
+		);
+    $('.reload').click( function(evento) {
+        evento.preventDefault();
+        updatecomments('{{ entry.slug }}' );} );
+        
+    $('#next').val(window.location);
+{% endblock %} 
+
+{% block content %}
+
+{% include 'entry.html' %}
+
+{% include 'addcomment.html' %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+<div id="addcomment" title="Añadir comentario">
+	<form method="post" action="#" id="formcomment">
+	<fieldset>
+		<label for="name">Nombre o alias</label>
+		<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" {% if user.is_authenticated %}value="{{user}}"{% endif %}/>
+		<label for="email">Email (opcional, no será publicado)</label>
+		<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" {% if user.is_authenticated %}value="{{user.email}}"{% endif %}/>
+		<label for="comment">Comentario</label>
+		<textarea name="comment" id="comment" value="" class="text ui-widget-content ui-corner-all"></textarea>
+	</fieldset>
+	</form>
+    <input type="hidden" name="slug" id="slug" value='#'/>
+	
+	<p class="validateTips"></p>
+</div>

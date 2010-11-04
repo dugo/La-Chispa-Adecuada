@@ -1,0 +1,35 @@
+{% load order_by %}
+
+{% if entry.public or user == entry.author %}
+<div class="entry">
+	<div class="date">{{ entry.created|date:"d b"  }}</div>
+	<a href="#" id="{{ entry.slug }}-link">
+		{{ entry.title }}
+		<img id="bg-image" src="{{ entry.image.url }}" alt="{{ entry.title }}"/>
+		<span class="desc" id="{{ entry.slug }}-desc"><strong>{{ entry.title }}</strong>{{ entry.brief }}</span>
+	</a>
+</div>
+
+<div class="content content_expanded0 content_expanded1" id="{{ entry.slug }}-content">
+
+    {% if user.is_authenticated and user == entry.author %}
+    <a href="{% url blog.views.delete entry.slug %}" class="delete">Delete</a>
+    <a href="{% url blog.views.edit entry.slug %}" class="edit">Edit</a>
+    {% endif %}
+
+	<a class="title" href='{% url blog.views.page entry.slug %}' >{{ entry.title }}</a>
+	<div class="p">
+	{{ entry.content|safe }}
+	</div>
+	<a href="#" class="num_comments">{% if entry.comment_set.count == 0 %}No{% else %}{{ entry.comment_set.count }}{% endif %}  comment{{ entry.comment_set.count|pluralize }} or insult{{ entry.comment_set.count|pluralize }}</a>
+	<a href="#" class="add_comment">Add one</a>
+    <a href="#" class="reload">Reload</a>
+    <div class="comments">
+	{% for c in entry.comment_set.all|order_by:"-created" %}
+		<span class="author">[{{c.created|date:"dby H:i"}}] {{c.author }}:</span>
+		<div class="comment"><p>{{ c.content }}</p></div>
+	{% endfor %}
+    </div>
+	
+</div>
+{% endif %}
