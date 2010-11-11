@@ -4,6 +4,8 @@ urlpatterns = patterns('blog.views',
 
     # To show the last entries
     url(r'^$', 'index', {'last':True}, name='main' ),
+    # Sitemap.xml
+    url(r'^sitemap.xml$', 'sitemap' ),
     # To show all entries
     url(r'^all$', 'index'),
     # Add a new entry

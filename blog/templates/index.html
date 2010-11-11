@@ -15,6 +15,8 @@
 		function() { $("#{{ entry.slug }}-desc").css("display","none"); }
 	);
 	
+	
+	{% if not expanded %}	
 	$("#{{ entry.slug }}-content a.num_comments").click(
 		function(evento) {
 			evento.preventDefault();
@@ -27,7 +29,21 @@
 		function(evento) { expand(evento,'{{ entry.slug }}'); },
 		function(evento) { contract(evento,'{{ entry.slug }}'); }
 		);
-	$( "#{{ entry.slug }}-link" ).dblclick( function() { } );
+	$( "#{{ entry.slug }}-link" ).dblclick( function(e) { e.preventDefaul(); } );
+	
+	{% else %}
+	
+	$("#{{ entry.slug }}-content a.num_comments").click(
+		function(evento) {
+			evento.preventDefault();
+		});
+		
+	$( "#{{ entry.slug }}-link" ).click(
+		function(evento) {
+			evento.preventDefault();
+		});
+	
+	{% endif %}
 
     $('#{{ entry.slug }}-content a.num_comments,#{{ entry.slug }}-content a.add_comments,#{{ entry.slug }}-content a.reload').click( function(evento) {
         evento.preventDefault();
@@ -45,8 +61,10 @@
 	{% endif %}
 	{% endfor %}
 	
-	$('.content').addClass('content_contract').removeClass('content_expanded0').removeClass('content_expanded1');
-	$('.comments').css('display','none');
+	{% if not expanded %}
+		$('.content').addClass('content_contract').removeClass('content_expanded0').removeClass('content_expanded1');
+		$('.comments').css('display','none');
+	{% endif %}
 {% endblock %}
 
 {% block content %}

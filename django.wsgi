@@ -1,11 +1,11 @@
 import os
 import sys
 
-path = '/var/www/django/lachispaadecuada'
+path = '/var/webapps/lachispaadecuada'
 if path not in sys.path:
     sys.path.append(path)
 
-path = '/var/www/django'
+path = '/var/webapps'
 if path not in sys.path:
     sys.path.append(path)
 

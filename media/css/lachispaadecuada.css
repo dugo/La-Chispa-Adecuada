@@ -244,3 +244,38 @@ fieldset { padding:0; border:0; margin-top:25px; }
 .validateTips { border: 1px solid transparent; padding: 0.3em; }
 
 
+blockquote {
+	position: relative;
+	text-indent: 2em;
+}
+ 
+.bqstart,
+.bqend { font-size: 300%; }
+ 
+/* apply IE specific rules first */
+.bqstart {
+	text-indent: 0;
+	margin: -0.6em 0 -2em 0;
+	float: left;
+}
+ 
+blockquote > .bqstart {
+	/* add extra non-ie rules */
+	position: absolute;
+	top: -0.2em;
+	left: 0;
+	/* remove IE specific rules */
+	float: none;
+	margin: 0;
+}
+ 
+.bqend {
+	position: absolute;
+	margin-top: -0.6em;
+	right: 0;
+	text-indent: 0;
+}
+ 
+blockquote > .bqend {
+	margin-top: -0.2em;
+}

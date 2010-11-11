@@ -113,7 +113,7 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     "django.contrib.messages.context_processors.messages"
 )
 
-ROOT_URL = '/lachispaadecuada/'
+ROOT_URL = '/'
 
 MEDIA_URL = ROOT_URL + 'media/'
 ADMIN_MEDIA_PREFIX = ROOT_URL + 'media/admin/'

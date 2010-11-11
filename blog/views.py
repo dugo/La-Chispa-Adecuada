@@ -27,7 +27,7 @@ def index(request,last=False):
     else:
         entries = Entry.objects.all().order_by('-created')
     
-    return render_to_response('index.html', {'entries':entries}, context_instance=RequestContext(request))
+    return render_to_response('index.html', {'entries':entries,'expanded':not last}, context_instance=RequestContext(request))
 
 def page(request,slug):
 	""" Carga la plantilla de entradas expandidas """
@@ -144,3 +144,8 @@ def ajaxcomments(request,slug):
 
 	return render_to_response('ajaxcomments.html',dict(comments=comments))
 
+def sitemap(request):
+	entries = Entry.objects.all().order_by('-created')[:]
+	last = entries[0].created
+	
+	return render_to_response('sitemap.xml',dict(entries=entries,last=last,HTTP_HOST='http://lachispaadecuada.dug0.com'),mimetype='application/xml')
