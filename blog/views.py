@@ -14,6 +14,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.models import Site, RequestSite
 from django.utils import simplejson
 import re
+from os import remove
 
 from settings import ROOT_URL
 
@@ -68,7 +69,7 @@ def edit(request,slug=None):
 		try:
 			entry = Entry.objects.get(slug=slug)
 		except Entry.DoesNotExist:
-			entry = Entry(slug=slug)
+			pass
 
 	c = RequestContext(request)
 	c.update(csrf(request))
@@ -78,17 +79,31 @@ def edit(request,slug=None):
 		form = EntryForm(request.POST,request.FILES)
 
 		if form.is_valid():
-			entry = form.save(commit=False)
-			entry.author = request.user
-			entry.save()
-			handle_uploaded_file(request.FILES['image'],str(entry.image.file))
+			# If editting
+			if entry:
+				entry.content = form.cleaned_data['content']
+				entry.brief = form.cleaned_data['brief']
+				entry.public = form.cleaned_data['public']
+				entry.title = form.cleaned_data['title']
+				entry.save()
+				remove(str(entry.image.file))
+				if request.FILES.__contains__('image'):
+					handle_uploaded_file(request.FILES['image'],str(entry.image.file))
+			# If NOT editting
+			else:
+				entry = form.save(commit=False)
+				entry.author = request.user
+				entry.save()
+				if request.FILES.__contains__('image'):
+					handle_uploaded_file(request.FILES['image'],str(entry.image.file))
+
 			return HttpResponseRedirect(ROOT_URL)
 		else:
 			return HttpResponse(str(form.errors))
 		
 	form = EntryForm(instance=entry)
 		
-	return render_to_response('edit.html', dict(form=form), context_instance=c)
+	return render_to_response('edit.html', dict(slug=slug,form=form), context_instance=c)
 
 @never_cache
 def loginajax(request, template_name='registration/login.html',

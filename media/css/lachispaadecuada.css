@@ -260,13 +260,12 @@ blockquote {
 	/* add extra non-ie rules */
 	position: relative;
 	left:-10px;
+	top:17px;
 }
  
 .bqend {
 	position: relative;
-	/*margin-top: 20px;
-	right: 0;*/
-	top:15px;
+	top:17px;
 	margin-left:10px;
 	text-indent: 0;
 	display:inline;

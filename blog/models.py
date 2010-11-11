@@ -6,12 +6,12 @@ from django.contrib.auth.models import User
 
 class Entry(models.Model):
     title = models.CharField(max_length=255)
-    brief = models.CharField(max_length=255)
+    brief = models.CharField(max_length=255,blank=True,default='')
     slug = models.SlugField(unique=True)
     content = models.TextField(blank=True)
     public = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="images")
+    image = models.ImageField(upload_to="images",blank=True,default='')
     author = models.ForeignKey(User)
     
     def save(self):

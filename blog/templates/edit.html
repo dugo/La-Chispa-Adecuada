@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form enctype="multipart/form-data" method="post" action="{% url blog.views.edit %}">
+<form enctype="multipart/form-data" method="post" action="{% if slug %}{% url blog.views.edit slug %}{% else %}{% url blog.views.edit %}{% endif %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Enviar"/>
