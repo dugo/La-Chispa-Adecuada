@@ -22,6 +22,8 @@
     $('#next').val(window.location);
 {% endblock %} 
 
+{% block title %}{{entry.title}} {% endblock %}
+
 {% block content %}
 
 {% include 'entry.html' %}

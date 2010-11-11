@@ -91,6 +91,10 @@ $(document).ready(function() {
     
     MAIN_URL = "{% url main %}";
     
+    $('blockquote')
+        .prepend("<span class='bqstart'>&#8220;</span>")
+        .append("<span class='bqend'>&#8221;</span>");
+    
     {% block extra_js_ready %} {% endblock %}
 });
 </script>
@@ -130,6 +134,8 @@ $(document).ready(function() {
 	</form>
 	<p class="validateTips">Identifíquese para acceder</p>
 </div>
+
+<div id="min"></div>
 
 </body>
 </html>

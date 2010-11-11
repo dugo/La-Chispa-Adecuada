@@ -21,13 +21,13 @@ from settings import ROOT_URL
 from blog.forms import EntryForm
 from blog.utils import *
 
-def index(request,last=False):
+def index(request,last=False,slug=None):
     if last:
         entries = Entry.objects.all().order_by('-created')[:10]
     else:
         entries = Entry.objects.all().order_by('-created')
     
-    return render_to_response('index.html', {'entries':entries,'expanded':not last}, context_instance=RequestContext(request))
+    return render_to_response('index.html', {'entries':entries,'expanded':not last,'slug':slug}, context_instance=RequestContext(request))
 
 def page(request,slug):
 	""" Carga la plantilla de entradas expandidas """

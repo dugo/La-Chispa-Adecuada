@@ -16,6 +16,8 @@ urlpatterns = patterns('blog.views',
     url(r'^(?P<slug>([^/]+))/comments/$', 'comments'),
     # View a entry
     url(r'^(?P<slug>([^/]+))/$', 'page'),
+    # Autoexpand an entry
+    url(r'^e/(?P<slug>([^/]+))/$','index', {'last':True}, name='main'),
     # Delete a entry
     url(r'^(?P<slug>([^/]+))/delete/$', 'delete'),
     # AJAX comments

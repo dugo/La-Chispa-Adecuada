@@ -1,7 +1,7 @@
 
 function expand(evento,id)
 {
-	evento.preventDefault();
+	if (evento) evento.preventDefault();
 	$( "#"+id+"-content div.comments" ).hide();
 	$( "#"+id+"-content" ).stop().addClass( "content_expanded1");
 	$( "#"+id+"-content" ).addClass( "content_expanded0", "slow");

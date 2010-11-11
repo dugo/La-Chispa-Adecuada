@@ -3,6 +3,9 @@
 {% block extra_js %}
 <script type="text/javascript" src="{{MEDIA_URL}}js/form.js"></script>
 <script type="text/javascript" src="{{MEDIA_URL}}js/animations.js"></script>
+{% if slug %}
+	<script src="{{ MEDIA_URL }}js/jquery.scrollTo-1.4.2-min.js"></script>
+{% endif %}
 {% endblock %}
 
 {% block extra_js_ready %}
@@ -64,6 +67,10 @@
 	{% if not expanded %}
 		$('.content').addClass('content_contract').removeClass('content_expanded0').removeClass('content_expanded1');
 		$('.comments').css('display','none');
+	{% endif %}
+	
+	{% if slug %}
+		$.scrollTo('#{{slug}}-link',500, {onAfter: function() { expand(null,'{{ slug }}'); } } );
 	{% endif %}
 {% endblock %}
 

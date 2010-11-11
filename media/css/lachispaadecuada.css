@@ -223,6 +223,8 @@ p
 	text-align:left;
 	font-weight:400;
 	opacity:0.7;
+	filter:alpha(opacity=70);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; /*--IE 8 Transparency--*/
 	bottom:0px;
 }
 
@@ -246,7 +248,8 @@ fieldset { padding:0; border:0; margin-top:25px; }
 
 blockquote {
 	position: relative;
-	text-indent: 2em;
+	text-indent: 20px;
+	font-style: italic;
 }
  
 .bqstart,
@@ -254,28 +257,26 @@ blockquote {
  
 /* apply IE specific rules first */
 .bqstart {
-	text-indent: 0;
-	margin: -0.6em 0 -2em 0;
-	float: left;
-}
- 
-blockquote > .bqstart {
 	/* add extra non-ie rules */
-	position: absolute;
-	top: -0.2em;
-	left: 0;
-	/* remove IE specific rules */
-	float: none;
-	margin: 0;
+	position: relative;
+	left:-10px;
 }
  
 .bqend {
-	position: absolute;
-	margin-top: -0.6em;
-	right: 0;
+	position: relative;
+	/*margin-top: 20px;
+	right: 0;*/
+	top:15px;
+	margin-left:10px;
 	text-indent: 0;
+	display:inline;
 }
- 
-blockquote > .bqend {
-	margin-top: -0.2em;
+
+#min
+{
+	position:relative;
+	display:block;
+	height:1000px;
+	width:1px;
 }
+
