@@ -28,7 +28,7 @@ class Entry(models.Model):
                 self.slug = original + "-%i" % i
                 i+=1
 
-            self.image.name = 'images/'+self.slug+".jpg"
+            #self.image.name = 'images/'+self.slug+".jpg"
         
         super(Entry,self).save()
     

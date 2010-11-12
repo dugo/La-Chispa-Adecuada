@@ -13,14 +13,13 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.models import Site, RequestSite
 from django.utils import simplejson
-import re
-from os import remove
+from django.core.files.base import ContentFile
+import re,os
 
 from settings import ROOT_URL
 
 
 from blog.forms import EntryForm
-from blog.utils import *
 
 def index(request,last=False,slug=None):
     if last:
@@ -85,17 +84,20 @@ def edit(request,slug=None):
 				entry.brief = form.cleaned_data['brief']
 				entry.public = form.cleaned_data['public']
 				entry.title = form.cleaned_data['title']
-				entry.save()
-				remove(str(entry.image.file))
-				if request.FILES.__contains__('image'):
-					handle_uploaded_file(request.FILES['image'],str(entry.image.file))
+				if request.FILES.__contains__('image') and request.FILES['image']:
+					try:
+						entry.image.delete()
+					except: pass
+					entry.image.save(entry.slug+os.path.splitext( request.FILES['image'].name )[1],ContentFile(request.FILES['image'].read()))
+					#handle_uploaded_file(request.FILES['image'],str(entry.image.file))
 			# If NOT editting
 			else:
 				entry = form.save(commit=False)
 				entry.author = request.user
-				entry.save()
-				if request.FILES.__contains__('image'):
-					handle_uploaded_file(request.FILES['image'],str(entry.image.file))
+				if request.FILES.__contains__('image') and request.FILES['image']:
+					entry.image.save(entry.slug+os.path.splitext( request.FILES['image'].name )[1],ContentFile(request.FILES['image'].read()))
+			
+			entry.save()
 
 			return HttpResponseRedirect(ROOT_URL)
 		else:

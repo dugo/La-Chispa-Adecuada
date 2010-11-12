@@ -5,7 +5,7 @@
 	<div class="date">{{ entry.created|date:"d b"  }}</div>
 	<a href="#" id="{{ entry.slug }}-link">
 		{{ entry.title }}
-		<img id="bg-image" src="{{ entry.image.url }}" alt="{{ entry.title }}"/>
+		{% if entry.image %}<img id="bg-image" src="{{ entry.image.url }}" alt="{{ entry.title }}"/>{% endif %}
 		<span class="desc" id="{{ entry.slug }}-desc"><strong>{{ entry.title }}</strong>{{ entry.brief }}</span>
 	</a>
 </div>
