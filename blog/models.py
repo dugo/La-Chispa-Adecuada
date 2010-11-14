@@ -16,17 +16,16 @@ class Entry(models.Model):
     
     def save(self):
         
-        """ Slug único si no lo tiene asignado """
-        if not self.slug:
-            original = self.slug = slugify(self.title)
-            i=1
-            while True:
-                try:
-                    entry = Entry.objects.all().get(slug=self.slug)
-                except Entry.DoesNotExist:
-                    break
-                self.slug = original + "-%i" % i
-                i+=1
+        """ Slug único """
+        original = self.slug = slugify(self.title)
+        i=1
+        while True:
+            try:
+                entry = Entry.objects.all().get(slug=self.slug)
+            except Entry.DoesNotExist:
+                break
+            self.slug = original + "-%i" % i
+            i+=1
 
             #self.image.name = 'images/'+self.slug+".jpg"
         

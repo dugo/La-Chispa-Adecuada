@@ -32,21 +32,16 @@ def index(request,last=False,slug=None):
 def page(request,slug):
 	""" Carga la plantilla de entradas expandidas """
 	
-	if slug:
-		try:
-			# Carga la página
-			entry = Entry.objects.get(slug=slug)
-			
-			# Si la página no es publica y no pertenece al usuario actual (en caso de estar autentificado)
-			if not entry.public and not (request.user.is_authenticated() and request.user==entry.author):
-				# No se permitirá la entrada
-				return HttpResponseForbidden('Acceso restringido')
-				
-			
-			return render_to_response('page.html',dict(entry=entry),context_instance=RequestContext(request))
-		except Entry.DoesNotExist:
-			# La crea
-			return edit(request,slug)
+	# Carga la página
+	entry = get_object_or_404(Entry,slug=slug)
+	
+	# Si la página no es publica y no pertenece al usuario actual (en caso de estar autentificado)
+	if not entry.public and not (request.user.is_authenticated() and request.user==entry.author):
+		# No se permitirá la entrada
+		return HttpResponseForbidden('Acceso restringido')
+		
+	
+	return render_to_response('page.html',dict(entry=entry),context_instance=RequestContext(request))
 
 def comments(request,slug):
 	
