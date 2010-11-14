@@ -22,6 +22,8 @@ class Entry(models.Model):
         while True:
             try:
                 entry = Entry.objects.all().get(slug=self.slug)
+                if entry.pk == self.pk:
+                    break
             except Entry.DoesNotExist:
                 break
             self.slug = original + "-%i" % i
