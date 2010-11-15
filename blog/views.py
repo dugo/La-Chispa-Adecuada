@@ -79,6 +79,7 @@ def edit(request,slug=None):
 				entry.brief = form.cleaned_data['brief']
 				entry.public = form.cleaned_data['public']
 				entry.title = form.cleaned_data['title']
+				entry.created = form.cleaned_data['created']
 				if request.FILES.__contains__('image') and request.FILES['image']:
 					try:
 						entry.image.delete()

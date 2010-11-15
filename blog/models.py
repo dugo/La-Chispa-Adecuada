@@ -3,6 +3,7 @@ from django.db import models
 #from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Entry(models.Model):
     title = models.CharField(max_length=255)
@@ -10,7 +11,7 @@ class Entry(models.Model):
     slug = models.SlugField(unique=True)
     content = models.TextField(blank=True)
     public = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.now)
     image = models.ImageField(upload_to="images",blank=True,default='')
     author = models.ForeignKey(User)
     

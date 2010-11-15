@@ -5,7 +5,7 @@ from django import forms
 class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
-        fields = ('title', 'content', 'brief','image','public')
+        fields = ('title', 'content', 'brief','image','public','created')
 
     def clean_title(self):
         if len(self.cleaned_data['title']) < 5:
