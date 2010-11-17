@@ -54,7 +54,7 @@ def comments(request,slug):
 		comment.save()
 		
 		# Send email to comment's owner if it wasn't sent previously
-		if request.POST['email'] and Comment.objects.filter(email=request.POST['email']).filter(entry=entry).count()==0:
+		if request.POST['email'] and Comment.objects.filter(email=request.POST['email']).filter(entry=entry).count()<=1:
 			send_mail(u'[La Chispa Adecuada] Comentarios',u'Acabas de añadir un comentario a la entrada: "%s".\nA partir de ahora serás notificado de nuevos comentarios en esta entrada.' % entry.title,'noreply@dug0.com',[request.POST['email']])
 		# Send email to administrator
 		send_mail(u'[La Chispa Adecuada] Comentarios',u'El usuario %s con el email %s acaba de añadir un nuevo comentario con fecha %s en la entrada "%s".\n"%s"' % (comment.author,comment.email,str(comment.created),entry.title,comment.content),'noreply@dug0.com',[settings.ADMINS[0][1]])
