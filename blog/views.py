@@ -14,6 +14,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.models import Site, RequestSite
 from django.utils import simplejson
 from django.core.files.base import ContentFile
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 import re,os
 
 from settings import ROOT_URL
@@ -50,6 +52,22 @@ def comments(request,slug):
 		entry = get_object_or_404(Entry,slug=slug)
 		comment = Comment(entry=entry,author=request.POST['name'],email=request.POST['email'],content=request.POST['comment'])
 		comment.save()
+		
+		# Send email to comment's owner if it wasn't sent previously
+		if request.POST['email'] and Comment.objects.filter(email=request.POST['email']).filter(entry=entry).count()==0:
+			send_mail(u'[La Chispa Adecuada] Comentarios',u'Acabas de añadir un comentario a la entrada: "%s".\nA partir de ahora serás notificado de nuevos comentarios en esta entrada.' % entry.title,'noreply@dug0.com',[request.POST['email']])
+		# Send email to administrator
+		send_mail(u'[La Chispa Adecuada] Comentarios',u'El usuario %s con el email %s acaba de añadir un nuevo comentario con fecha %s en la entrada "%s".\n"%s"' % (comment.author,comment.email,str(comment.created),entry.title,comment.content),'noreply@dug0.com',[settings.ADMINS[0][1]])
+		
+		# Send email to others commenters
+		to = []
+		for c in entry.comment_set.all():
+			if c.email and c.email != request.POST['email'] and c.email not in to:
+				to.append(c.email)
+		
+		if len(to)>0:
+			send_mail(u'[La Chispa Adecuada] Comentarios',u'Ha habido un nuevo comentario en la entrada "%s" en la que comentastes.\nPara verlo ve a %s' % (entry.title,settings.HOST+reverse('main',args=[entry.slug])),'noreply@dug0.com',[to])
+		
 		return HttpResponse('ok')
 	else:
 		return HttpResponseRedirect(ROOT_URL+'%s' % (slug))

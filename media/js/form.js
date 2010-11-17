@@ -2,7 +2,7 @@ function init_form()
 {
 	$( "#addcomment" ).dialog({
 		autoOpen: false,
-		height: 360,
+		height: 380,
 		width: 350,
 		modal: true,
 		resizable:false,

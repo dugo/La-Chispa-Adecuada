@@ -60,8 +60,8 @@ MEDIA_URL = '/lachispaadecuada/media/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 
-# ADMIN_MEDIA_PREFIX = '/media/admin/' # Para produccion
-ADMIN_MEDIA_PREFIX = '/admin/media/' # Para desarrollo
+ADMIN_MEDIA_PREFIX = '/media/admin/' # Para produccion
+#ADMIN_MEDIA_PREFIX = '/admin/media/' # Para desarrollo
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '!f-!abv__by=8(&u2x=@@td4qq&vry$3&hxz=0p8v_5lj)b#xl'
@@ -113,6 +113,7 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     "django.contrib.messages.context_processors.messages"
 )
 
+HOST = 'http://lachispaadecuada.dug0.com'
 ROOT_URL = '/'
 
 MEDIA_URL = ROOT_URL + 'media/'
@@ -120,3 +121,8 @@ ADMIN_MEDIA_PREFIX = ROOT_URL + 'media/admin/'
 LOGIN_URL = ROOT_URL + 'accounts/login/'
 LOGOUT_URL = ROOT_URL + 'accounts/logout/'
 LOGIN_REDIRECT_URL = ROOT_URL + 'accounts/profile/'
+
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = 'dugo@dug0.com'
+SERVER_EMAIL = "localhost"
